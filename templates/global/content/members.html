@@ -1,0 +1,91 @@
+{% extends 'global/extend/index.html' %}
+{% load static %}
+{% block title %}Usuários{% endblock title %}
+{% block content %}
+    <div>
+        <div class="members-main-header">
+            <h1>Lista de membros do fórum</h1>
+        </div>
+        {% include 'global/include/pagination.html' %}
+        <div class="members-body-container">
+            <nav class="members-nav-container">
+                <ul class="members-nav-ul-main-container">
+                    <a href="{% url 'account:members_all' %}">
+                        <li>Todos</li>
+                    </a>
+                    <a href="{% url 'account:members_staffs' %}">
+                        <li>Moderadores</li>
+                    </a>
+                    <a href="{% url 'account:members_likes' %}">
+                        <li>Likes</li>
+                    </a>
+                    <a href="{% url 'account:members_topics' %}">
+                        <li>Tópicos</li>
+                    </a>
+                    <a href="{% url 'account:members_replies' %}">
+                        <li>Comentários</li>
+                    </a>
+                </ul>
+                <div class="member-list-header">
+                    {% if request.path == '/members/likes/' %}
+                        <span>Likes</span>
+                    {% elif request.path == '/members/replies/' %}
+                        <span>Comentários</span>
+                    {% else %}
+                        <span>Tópicos</span>
+                    {% endif %}
+                </div>
+            </nav>
+            <div class="members-list-main-container" id="members-list-filter-a">
+                {% for member in members %}
+                    <div class="member-list-outer-loop">
+                        <div>
+                            <div class="member-list-inner-loop">
+                                <div class="member-image">
+                                    {% if member.account.img %}
+                                        <img src="{{member.account.img.url}}" alt="Avatar de {{member.username}}" title="Avatar de {{member.username}}">
+                                    {% else %}
+                                    <img src="{% static 'img/default/default128x128.png' %}" alt="Avatar de {{member.username}}" title="Avatar de {{member.username}}">
+                                    {% endif %}
+                                </div>
+                                <div class="member-list-inner-infos">
+                                    <div class="member-list-inner-is-staff">
+                                        <a href="{% url 'account:dashboard_view' name=member.username id=member.id %}">
+                                            <strong>{{member.username}}</strong>
+                                        </a>
+                                        {% if member.is_staff %}
+                                            <a href="{% url 'account:members_staffs' %}" class="member-list-inner-is-staff-mod">
+                                                Moderador
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                    <div class="member-list-inner-statistics">
+                                        <span>{{member.account.gender}}
+                                            {% if member.account.birth_date %}
+                                                {{member.account.birth_date|date:"d/m/Y"}}
+                                            {% else %}
+                                            {% endif %}
+                                            Mensagens: {{member.total_replies}}
+                                            likes: {{member.total_likes}}
+                                            Tópicos: {{member.total_topics}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="member-list-outer-total">
+                            {% if request.path == '/members/likes/' %}
+                                <span>{{member.total_likes}}</span>
+                            {% elif request.path == '/members/replies/' %}
+                                <span>{{member.total_replies}}</span>
+                            {% else %}
+                                <span>{{member.total_topics}}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% include 'global/include/pagination.html' %}
+    </div>
+{% endblock content %}

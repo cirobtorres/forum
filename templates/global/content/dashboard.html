@@ -1,0 +1,113 @@
+{% extends 'global/extend/index.html' %}
+{% load static %}
+{% block title %}perfil - {{request.user.username}}{% endblock title %}
+{% block content %}
+
+{% for i in me_delete %}
+    {{i}}<br>
+{% endfor %}
+
+<!--LEMBRETE: USUÁRIOS NÃO DEVEM ACESSAR SESSÕES E TÓPICOS BLOQUEADOS!!-->
+
+    <div class="dashboard-form-display-grid">
+        {% include 'global/include/dashboard-nav.html' %}
+        <div>
+            <div class="dashboard-menu-container-a" id="nav-profile-box-a">
+                <div class="dashboard-menu-container-title">
+                    <h1>Visão geral: perfil de {{user.username}}</h1>
+                </div>
+                <div>
+                    {% include 'global/include/dashboard-recent.html' %}
+                </div>
+            </div>
+            <div class="dashboard-menu-container-b" id="nav-profile-box-b">
+                <div class="dashboard-menu-container-title">
+                    <h1>Meus Dados</h1>
+                </div>
+                <div class="dashboard-update-container">
+                    <div class="dashboard-update-email-password">
+                        <button>Alterar e-mail</button>
+                        <button>Alterar senha</button>
+                    </div>
+                    <form 
+                        action="{% url 'account:update_confirm' name=request.user.username id=request.user.id %}" 
+                        method="POST" 
+                        enctype="multipart/form-data"
+                    >
+                        {% csrf_token %}
+                        <div class="dashboard-update-form-grid">
+                            <div class="dashboard-update-form">
+                                {% for user_field in user_form %}
+                                    <div>
+                                        <label>{{user_field.label}}</label>
+                                            <div>{{user_field}}</div>
+                                            {% if user_field.help_text %}
+                                                <div class="dashboard-update-form-help-text">
+                                                    <span>
+                                                        {{user_field.help_text}}
+                                                    </span>
+                                                </div>
+                                            {% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="dashboard-update-form">
+                                {% for account_field in account_form %}
+                                    <div>
+                                        {% if account_field.field.widget.input_type == 'file' %}
+                                            <div>{{account_field}}</div>
+                                            {% if account_field.help_text %}
+                                                <div class="dashboard-update-form-help-text">
+                                                    <span>
+                                                        {{account_field.help_text}}
+                                                    </span>
+                                                </div>
+                                            {% endif %}
+                                            <div class="dashboard-update-form-img">
+                                                {% if account_field.value.url is not None %}
+                                                    <img 
+                                                        src="{{account_field.value.url}}"
+                                                        alt="Avatar de {{request.user.username}}"
+                                                        title="Perfil de {{request.user.username}}"
+                                                    >
+                                                {% else %}
+                                                    <img 
+                                                        src="{% static 'img/default/default128x128.png' %}"
+                                                        alt="Avatar de {{request.user.username}}"
+                                                        title="Perfil de {{request.user.username}}"
+                                                    >
+                                                {% endif %}
+                                            </div>
+                                        {% else %}
+                                            <label>{{account_field.label}}</label>
+                                            <div>{{account_field}}</div>
+                                            {% if account_field.help_text %}
+                                                <div class="dashboard-update-form-help-text">
+                                                    <span>
+                                                        {{account_field.help_text}}
+                                                    </span>
+                                                </div>
+                                            {% endif %}
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="dashboard-update-form-button">
+                            <button type="submit">Confirmar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="dashboard-menu-container-c" id="nav-profile-box-c">
+                <div class="dashboard-menu-container-title">
+                    <h1>Meus Comentários</h1>
+                </div>
+                <div class="dashboard-my-replies-container">
+                    <span>Exemplo</span>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="{% static 'js/dashboard.js' %}"></script>
+{% endblock content %}

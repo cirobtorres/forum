@@ -1,0 +1,25 @@
+<div class="breadcrumb-main-container">
+    <div>
+        <i class="fa-solid fa-house"></i>
+    </div>
+    <ol class="breadcrumb-ordered-nav-list">
+        <li>
+            <span>
+                <a href="{% url 'forum:home' %}">Home</a>
+            </span>
+        </li>
+        {% for link in breadcrumb %}
+            <li>
+                <span>
+                    {% if forloop.counter == 2 %}
+                        <a href="{% url 'forum:topic' session_id=link.topic_session_id topic_id=link.id %}">
+                    {% else %}
+                        <a href="{% url 'forum:session' session_id=link.id %}">
+                    {% endif %}
+                        {{link}}
+                    </a>
+                </span>
+            </li>
+        {% endfor %}
+    </ol>
+</div>

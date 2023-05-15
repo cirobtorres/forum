@@ -1,0 +1,13 @@
+.env
+.vscode
+.coverage
+.coverage.*
+htmlcov
+venv
+db.sqlite3
+manage.py
+__pycache__
+migrations
+**/img/**
+!default
+!default128x128.png

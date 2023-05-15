@@ -1,0 +1,18 @@
+{% if topic.1.0.has_other_pages %}
+    <nav class="home-pagination">
+        Páginas:
+        {% if topic.1.4 > 2 %}
+            <a href="{% url 'forum:topic' session_id=session.0.id topic_id=topic.0.id %}?page={{topic.1.4|add:-2}}">
+                {{topic.1.4|add:-2}}
+            </a>
+        {% endif %}
+        {% if topic.1.4 > 1 %}
+            <a href="{% url 'forum:topic' session_id=session.0.id topic_id=topic.0.id %}?page={{topic.1.4|add:-1}}">
+                {{topic.1.4|add:-1}}
+            </a>
+        {% endif %}
+        <a href="{% url 'forum:topic' session_id=session.0.id topic_id=topic.0.id %}?page={{topic.1.4}}">
+            {{topic.1.4}}
+        </a>
+    </nav>
+{% endif %}

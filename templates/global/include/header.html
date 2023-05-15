@@ -1,0 +1,34 @@
+<!-- 
+    Células com 'width' fixas:
+    https://codepen.io/adamgonzls/pen/BKdVZd
+ -->
+<nav class="header-display-grid">
+    <div class="header-nav-vertical-margin header-fit-content">
+        {% if request.user.is_authenticated %}
+            <form action="{% url 'account:logout_view' %}" method="POST" class="header-form">
+                {% csrf_token %}
+                Olá
+                <a 
+                    href="{% url 'account:dashboard' name=user.username id=user.id %}" 
+                    class="header-form-username" 
+                    title="Perfil">{{request.user.username}}</a> |
+                <button type="submit">sair</button>
+                <input type="hidden" name="username" value="{{request.user.username}}"><!--NECESSÁRIO!-->
+            </form>
+        {% else %}
+            <ul class="header-ul-display-flex-inline header-ul-menu-selection-style">
+                <li><a href="{% url 'account:login_access' %}">Entrar</a></li>
+                <li><a href="{% url 'account:register_access' %}">Cadastrar</a></li>
+            </ul>
+        {% endif %}
+    </div class="header-nav-vertical-margin">
+    <div class="header-search-bar-fit-content">
+        {% include 'global/include/search.html' %}
+    </div>
+    <div class="header-nav-right-side-aligned-by-margin header-fit-content">
+        <ul class="header-ul-display-flex-inline header-ul-menu-selection-style">
+            <li><a href="{% url 'forum:home' %}">Home</a></li>
+            <li><a href="{% url 'account:members_all' %}">Membros</a></li>
+        </ul>
+    </div>
+</nav>

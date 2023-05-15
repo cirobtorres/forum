@@ -1,0 +1,92 @@
+{% load static %}
+{% if topic.topic_user.is_staff %}
+<div class="topic-outer-border topic-outer-border-staff">
+{% else %}
+<div class="topic-outer-border topic-outer-border-regular">
+{% endif %}
+    <div class="topic-outer-user-container">
+        <div class="topic-inner-left-container topic-inner-left-grid">
+            <div class="topic-inner-left-container-img-topics">
+                {% if topic.topic_user %}
+                    <a href="{% url 'account:dashboard_view' name=topic.topic_user.username id=topic.topic_user_id %}">
+                        {% if topic.topic_user.account.img.url is not None %}
+                            <img 
+                                src="{{topic.topic_user.account.img.url}}" 
+                                alt="Avatar de {{topic.topic_user.username}}" 
+                                title="Perfil de {{topic.topic_user.username}}"
+                            >
+                        {% else %}
+                            <img 
+                                src="{% static 'media/img/default/default128x128.png' %}" 
+                                alt="Avatar de {{topic.topic_user.username}}" 
+                                title="Perfil de {{topic.topic_user.username}}"
+                            >
+                        {% endif %}
+                    </a>
+                    {% else %}
+                        <img 
+                            src="{% static 'media/img/default/default128x128.png' %}" 
+                            alt="Avatar de {{topic.topic_user.username}}" 
+                            title="Perfil de {{topic.topic_user.username}}"
+                        >
+                {% endif %}
+            </div>
+            <div class="topic-inner-left-container-user-data">
+                <span>
+                    {% if topic.topic_user %}
+                        <a href="{% url 'account:dashboard_view' name=topic.topic_user.username id=topic.topic_user_id %}">
+                            {{topic.topic_user.username}}
+                        </a>
+                </span>
+                {% if topic.topic_user.is_staff %}
+                    <span class="topic-inner-left-moderator">Moderador</span>
+                {% endif %}
+                <span>Ingressou: {{topic.topic_user.date_joined|date:"d/m/Y"}}</span>
+                <span>
+                    {% if topic.topic_user.account.city %}{{topic.topic_user.account.city}}/{% endif %}{{topic.topic_user.account.state}}
+                </span>
+                {% else %}
+                    usuário_excluído
+                {% endif %}
+            </div>
+        </div>
+        <div class="topic-inner-right-container">
+            <article>
+                {{topic.topic_content}}
+            </article>
+            {% include 'global/include/like_topic_thumbs_up.html' %}
+            <div class="topic-footer">
+                {% if topic.topic_timestamp_update > topic.topic_timestamp_create %}
+                    <div class="topic-footer-creator-info">
+                        <span><b>Editado</b> pela última vez por
+                            {% if topic.topic_user %}
+                            <a href="{% url 'account:dashboard_view' name=topic.topic_user.username id=topic.topic_user.id %}">
+                                <strong>{{topic.topic_user.username}}</strong></a>
+                            {% else %}
+                                <b>usuário_excluído</b>
+                            {% endif %}
+                            em {{topic.topic_timestamp_update|date:"d \d\e F \d\e Y à\s H:s:i"}}</span>
+                    </div>
+                {% endif %}
+                {% include 'global/include/likes_users.html' %}
+                {% if tags %}
+                    <div class="topic-tags-main-container">
+                        <ul class="topic-tags">
+                            {% for tag in tags %}
+                                <li>
+                                    <a href="{% url 'forum:tag' tag_name=tag.tag__name tag_id=tag.tag %}">
+                                        <div class="topics-tag-style">
+                                            <span class="topics-tag-style-span">{{tag.tag__name}}</span>
+                                        </div>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+                <span class="topic-counter">#1</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'global/include/topic_update.html' %}

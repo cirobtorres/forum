@@ -1,0 +1,32 @@
+{% if likes.0 %}
+    <div class="topic-like-main-section">
+        <span class="topic-like-ul">
+            {% for like in likes.0|slice:10 %}
+                <a href="{% url 'account:dashboard_view' name=like.username id=like.id %}" class="topic-footer-like-user-link">
+                    <span>
+                        <b>{{like.username}}</b>
+                    </span>
+                </a>
+                {% if forloop.revcounter0 > 1 %}
+                    ,
+                {% elif forloop.revcounter0 == 1 %}
+                    e
+                {% endif %}
+                {% if forloop.last %}
+                    {% if forloop.counter == 1 %}
+                        curtiu isso
+                    {% elif forloop.counter > 1 %}
+                        {% if likes.0.count > 10 %}  <!--ESSE IF NUNCA FOI TESTADO-->
+                            e mais {{likes.0.count|add:"-10"}} curtiram isso
+                        {% else %}
+                            curtiram isso
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </span>
+    </div>
+    <div class="topic-like-total">
+        <span>Ao todo {{likes.1}} {% if likes.1 > 1 %}pessoas curtiram{% else %}pessoa curtiu{% endif %} esse tópico</span>
+    </div>
+{% endif %}

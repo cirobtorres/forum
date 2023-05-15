@@ -1,0 +1,32 @@
+{% extends 'global/extend/index.html' %}
+{% block title %}criação de tópico{% endblock title %}
+{% block content %}
+    <div class="topic-creation-header">
+        <h1>Tópico em: "<a href="{% url 'forum:session' session_id=session_id %}">{{session.session_title}}</a>"</h1>
+    </div>
+    <div class="topic-creation-main-container topic-creation-grid">
+        <form action="{{form_confirmation}}" method="POST">
+            {% csrf_token %}
+            {% for field in form %}
+                <div>
+                    {% if field.name == 'fixed' and not request.user.is_staff %}
+                        <!--SKIP-->
+                    {% else %}
+                        <label>{{field.label}}</label>
+                        {{field}}
+                        {% if field.help_text %}
+                            <span class="topic-creation-help-text">{{field.help_text}}</span>
+                        {% endif %}
+                        {{field.errors}}
+                        {% if field.errors %}
+                            {% for error in field.errors %}
+                                <span><i class="fa-solid fa-triangle-exclamation"></i>{{error}}</span>
+                            {% endfor %}
+                        {% endif %}
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <button class="topic-creation-button">Criar Tópico</button>
+        </form>
+    </div>
+{% endblock content %}

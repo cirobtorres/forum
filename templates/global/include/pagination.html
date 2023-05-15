@@ -1,0 +1,118 @@
+{% if pagination.0.has_other_pages %}
+    <nav class="pagination">
+        Página {{pagination.5}} de {{pagination.4}}
+        {% if pagination.3 %}
+            <div class="pagination-width-aligned-cells pagination-pages">
+                <a href="?{% if query %}q={{query}}&{% endif %}page={{pagination.0.previous_page_number}}">
+                    <div class="pagination-width-aligned-cells">
+                        <span><i class="fa-solid fa-chevron-left"></i></span>
+                    </div>
+                </a>
+            </div>
+        {% else %}
+        <div class="pagination-width-aligned-cells">
+            <div class="pagination-width-aligned-cells">
+                
+            </div>
+        </div>
+        {% endif %}
+        {% if pagination.5 == 1 %}
+            <div class="pagination-width-aligned-cells pagination-pages pagination-current-page">
+                <a href="?{% if query %}q={{query}}&{% endif %}page=1">
+                    <div class="pagination-width-aligned-cells">
+                        <span>1</span>
+                    </div>
+                </a>
+            </div>
+        {% else %}
+            <div class="pagination-width-aligned-cells pagination-pages">
+                <a href="?{% if query %}q={{query}}&{% endif %}page=1">
+                    <div class="pagination-width-aligned-cells">
+                        <span>1</span>
+                    </div>
+                </a>
+            </div>
+        {% endif %}
+        {% if pagination.0.number|add:"-2" > 2 %}
+            <div class="pagination-width-aligned-cells">
+                <div class="pagination-width-aligned-cells">
+                    <span>&hellip;</span>
+                </div>
+            </div>
+        {% endif %}
+        {% for page in pagination.1 %}
+            {% if page == 1 %}
+                <!--primeira página é fixa-->
+            {% elif page == pagination.4 %}
+                <!--última página é fixa-->
+            {% elif page == pagination.0.number %}
+                {% if page == pagination.5 %}
+                    <div class="pagination-width-aligned-cells pagination-pages pagination-current-page">
+                        <a href="?{% if query %}q={{query}}&{% endif %}page={{pagination.0.number}}">
+                            <div class="pagination-width-aligned-cells">
+                                <span>{{pagination.0.number}}</span>
+                            </div>
+                        </a>
+                    </div>
+                {% else %}
+                    <div class="pagination-width-aligned-cells pagination-pages">
+                        <a href="?{% if query %}q={{query}}&{% endif %}page={{pagination.0.number}}">
+                            <div class="pagination-width-aligned-cells">
+                                <span>{{pagination.0.number}}</span>
+                            </div>
+                        </a>
+                    </div>
+                {% endif %}
+            {% elif page > pagination.0.number|add:"-3" and page < pagination.0.number|add:"3" %}
+                <div class="pagination-width-aligned-cells pagination-pages">
+                    <a href="?{% if query %}q={{query}}&{% endif %}page={{page}}">
+                        <div class="pagination-width-aligned-cells">
+                            <span>{{page}}</span>
+                        </div>
+                    </a>
+                </div>
+            {% endif %}
+        {% endfor %}
+        {% if pagination.4 > pagination.0.number|add:"3" %}
+            <div class="pagination-width-aligned-cells">
+                <div class="pagination-width-aligned-cells">
+                    <span>&hellip;</span>
+                </div>
+            </div>
+        {% endif %}
+        {% if pagination.4 %}
+            {% if pagination.5 == pagination.4 %}
+                <div class="pagination-width-aligned-cells pagination-pages pagination-current-page">
+                    <a href="?{% if query %}q={{query}}&{% endif %}page={{pagination.4}}">
+                        <div class="pagination-width-aligned-cells">
+                            <span>{{pagination.4}}</span>
+                        </div>
+                    </a>
+                </div>
+            {% else %}
+                <div class="pagination-width-aligned-cells pagination-pages">
+                    <a href="?{% if query %}q={{query}}&{% endif %}page={{pagination.4}}">
+                        <div class="pagination-width-aligned-cells">
+                            <span>{{pagination.4}}</span>
+                        </div>
+                    </a>
+                </div>
+            {% endif %}
+        {% endif %}
+        {% if pagination.2 %}
+            <div class="pagination-width-aligned-cells pagination-pages">
+                <a href="?{% if query %}q={{query}}&{% endif %}page={{pagination.0.next_page_number}}">
+                    <div class="pagination-width-aligned-cells">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                </a>
+            </div>
+        {% else %}
+            <div class="pagination-width-aligned-cells">
+                <div class="pagination-width-aligned-cells">
+                    
+                </div>
+            </div>
+        {% endif %}
+    </nav>
+{% endif %}

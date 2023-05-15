@@ -1,0 +1,38 @@
+{% extends 'global/extend/index.html' %}
+{% block title %}{{query_title}}{% endblock title %}
+{% block content %}
+    <div>
+        <h1>{{total}} resultados para "{{query_title}}"</h1>
+    </div>
+    {% include 'global/include/pagination.html' %}
+    <div class="search-list-main-container">
+        {% for topic in pagination.0 %}
+            <div class="search-list-grid-row-container search-list-topic-container">
+                <div class="search-list-grid-column-container">
+                    <div>
+                        <span>
+                            <a href="{% url 'forum:topic' session_id=topic.topic_session_id topic_id=topic.id %}">
+                                <strong>{{topic}}</strong></a> em
+                            <a href="{% url 'forum:session' session_id=topic.topic_session.id %}">
+                                {{topic.topic_session.session_title}}</a>
+                        </span>
+                    </div>
+                    <div class="search-list-topic-user-container">
+                        <span>Tópico criado por
+                            {% if topic.topic_user %}
+                            <a href="{% url 'account:dashboard_view' name=topic.topic_user.username id=topic.topic_user.id %}">
+                                <strong>{{topic.topic_user.username}}</strong></a>
+                            {% else %}
+                                <b>usuário_excluído</b>
+                            {% endif %}, em {{topic.topic_timestamp_create|date:"d \d\e F \d\e Y à\s H:i:s"}}
+                        </span>
+                    </div>
+                </div>
+                <div class="search-list-topic-content">
+                    {{topic.topic_content|truncatechars:300}}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% include 'global/include/pagination.html' %}
+{% endblock content %}

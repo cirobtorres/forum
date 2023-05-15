@@ -1,0 +1,29 @@
+{% if topic.topic_user_id == request.user.id %}
+    <div class="topic-outer-discussion-reply-footer">
+        <div class="topic-outer-discussion-button">
+            <form action="">
+                <button>Editar</button>
+            </form>
+            {% if request.user.is_staff %}
+                <form action="{% url 'forum:topic_delete' session_id=topic.topic_session_id topic_id=topic.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" value="comment_{{topic.id}}">Excluir</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+{% elif topic.topic_user_id != request.user.id and request.user.is_staff %}
+    <div class="topic-outer-discussion-reply-footer">
+        <div class="topic-outer-discussion-button-staff">
+            <form action="">
+                <button>Editar</button>
+            </form>
+            {% if request.user.is_staff %}
+                <form action="{% url 'forum:topic_delete' session_id=topic.topic_session_id topic_id=topic.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" value="comment_{{topic.id}}">Excluir</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+{% endif %}

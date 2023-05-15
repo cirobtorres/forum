@@ -1,0 +1,50 @@
+{% for user_field in user_form %}
+    {% if user_field.name == 'password' %}
+        <div class="form-account-outer-content">
+            {% for account_field in account_form %}
+                <div class="form-account-inner-content">
+                    {% if account_field.label %}
+                        <label for="{{account_field.id_for_label}}">
+                            {{account_field.label}}
+                            {% if account_field.field.required %}
+                                <span class="form-register-required-true">*</span>
+                            {% endif %}
+                        </label>
+                    {% endif %}
+                        {{account_field}}
+                    {% if account_field.help_text %}
+                        <span class="form-help-text">
+                            {{account_field.help_text}}
+                        </span>
+                    {% endif %}
+                    {% if account_field.errors %}
+                        {% for error in account_field.errors %}
+                            <span class="form-error-list"><i class="fa-solid fa-triangle-exclamation"></i> {{error}}</span>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    <div class="form-user-outer-content">
+        <div class="form-user-inner-content">
+            {% if user_field.label %}
+                <label for="{{user_field.id_for_label}}">
+                    {{user_field.label}}
+                    {% if user_field.field.required %}
+                        <span class="form-register-required-true">*</span>
+                    {% endif %}
+                </label>
+            {% endif %}
+            {{user_field}}
+            {% if user_field.help_text %}
+                <span class="form-help-text">{{user_field.help_text}}</span>
+            {% endif %}
+            {% if user_field.errors %}
+                {% for error in user_field.errors %}
+                    <span class="form-error-list"><i class="fa-solid fa-triangle-exclamation"></i> {{error}}</span>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+{% endfor %}

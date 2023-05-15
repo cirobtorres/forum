@@ -1,0 +1,44 @@
+{% extends 'global/extend/index.html' %}
+{% block title %}perfil - {{request.user.username}}{% endblock title %}
+{% block content %}
+    <div class="dashboard-view-main-container">
+        <div class="dashboard-view-header">
+            <h1>Perfil de {{member_user.username}}</h1>
+        </div>
+        <div class="dashboard-view-body">
+            <div class="dashboard-view-statistics">
+                <span>
+                    Estatísticas de {{member_user.username}}:
+                    Tópicos: {{member_topics.count}}
+                    Mensagens: {{member_replies.count}}
+                    Likes: {{total_likes}}
+                </span>
+                <span>
+                    Ingressou em {{member_user.date_joined}}
+                </span>
+            </div>
+            <div class="dashboard-view-topics-started">
+                <div>Tópicos:</div>
+                {% for topic in member_topics %}
+                    <span>
+                        <a href="{% url 'forum:topic' session_id=topic.topic_session_id topic_id=topic.id %}">{{topic}}</a>
+                    </span>
+                {% endfor %}
+            </div>
+            <div class="dashboard-view-replies">
+                <div>Comentários:</div>
+                {% comment %} {% for reply in member_replies %} {% endcomment %}
+                {% for reply in pagination.0 %}
+                    <span>
+                        <a href="{% url 'forum:topic' session_id=reply.reply_topic.topic_session_id topic_id=reply.reply_topic_id %}">
+                            {{reply.reply_topic}}</a>
+                    </span>
+                    <span>
+                        <a href="{% url 'forum:topic' session_id=reply.reply_topic.topic_session_id topic_id=reply.reply_topic_id %}?page={{reply}}#comment-of-{{reply.reply_user.username}}-{{reply.id}}">
+                            {{reply.reply_content}}</a>
+                    </span>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}  

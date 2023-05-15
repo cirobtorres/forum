@@ -1,0 +1,129 @@
+{% extends 'global/extend/index.html' %}
+{% block title %}home{% endblock title %}
+{% block content %}
+    <div class="home-centralized-box-container">
+        <div class="home-page-main-container">
+            <div>
+                <div class="home-page-topics-container">
+                    {% for _, forum in dict_data.items %}
+                        <div class="home-page-title-container">
+                            <h1>{{forum.0.forum_title}}</h1>
+                            {% if forum.0.forum_description %}
+                                <blockquote>{{forum.0.forum_description}}</blockquote>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <section class="home-page-section-main-container">
+                                {% for _, session in forum.1.items %}
+                                    <div class="home-page-section-title-container">
+                                        <div class="home-page-display-flex">
+                                            <div>
+                                                <i class="fa-solid fa-folder-open"></i>
+                                            </div>
+                                            <div>
+                                                <h2>
+                                                    <a href="{% url 'forum:session' session_id=session.0.id %}">
+                                                        {{session.0.session_title}}
+                                                    </a>
+                                                </h2>
+                                                {% if session.0.session_description is not None %}
+                                                    <blockquote>{{session.0.session_description}}</blockquote>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <blockquote>Tópicos: {{session.0.total_topics}} Mensagens: {{session.0.total_replies}}</blockquote>
+                                        </div>
+                                    </div>
+                                    {% if session.1 %}
+                                        <ul class="home-page-topic-ul">
+                                            {% for topic in session.1|slice:5 %}
+                                                <li class="home-page-discussions-main-container">
+                                                    <div class="home-page-display-flex">
+                                                        <div>
+                                                            <span><i class="fa-solid fa-comments"></i></span>
+                                                        </div>
+                                                        <div class="home-page-messages-counter">
+                                                            <h3>
+                                                                <a href="{% url 'forum:topic' session_id=session.0.id topic_id=topic.0.id %}">
+                                                                    {{topic.0.topic_title}}
+                                                                </a>
+                                                            </h3>
+                                                            <span>
+                                                                {% if topic.0.topic_user %}
+                                                                <a href="{% url 'account:dashboard_view' name=topic.0.topic_user.username id=topic.0.topic_user.id %}">
+                                                                    {{topic.0.topic_user.username}}</a>
+                                                                {% else %}
+                                                                    usuário_excluído
+                                                                {% endif %}, {{topic.0.topic_timestamp_create|date:"d \d\e F \d\e Y"}}
+                                                                Mensagens: {{topic.0.total_replies}}
+                                                                {% include 'global/include/pagination-home.html' %}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    {% if topic.0.last_reply_id %}
+                                                        <div>
+                                                            <div class="home-page-most-recent-topic-update">
+                                                                <span>Última postagem por
+                                                                    {% if topic.0.last_reply_username %}
+                                                                        <a href="{% url 'account:dashboard_view' name=topic.0.last_reply_username id=topic.0.last_reply_user_id %}">
+                                                                        <strong>{{topic.0.last_reply_username}}</strong>
+                                                                        </a>
+                                                                    {% else %}
+                                                                        <b>usuário_excluído</b>
+                                                                    {% endif %}<br>{{topic.0.last_reply_timestamp|date:"d/m/Y à\s H:i:s"}}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    {% endif %}
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                {% endfor %}
+                            </section>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div>
+                <div class="home-page-statistics-main-container">
+                    <div class="home-page-statistics-header">
+                        <h2>Mais recentes</h2>
+                    </div>
+                    <div class="home-page-statistics home-page-feed">
+                        <ul>
+                            {% for feed in topic_feed %}
+                                <li>
+                                    <span>
+                                        <a href="{% url 'forum:topic' session_id=feed.topic_session_id topic_id=feed.id %}">
+                                            {{feed}}</a>{% if not forloop.last %},{% endif %}
+                                    </span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="home-page-statistics-main-container">
+                    <div class="home-page-statistics-header">
+                        <h2>Estatísticas do Fórum</h2>
+                    </div>
+                    <div class="home-page-statistics">
+                        <dl>
+                            <dt>Tópicos:</dt>
+                            <dd>{{total.0.topics}}</dd>
+                        </dl>
+                        <dl>
+                            <dt>Mensagens:</dt>
+                            <dd>{{total.1.replies}}</dd>
+                        </dl>
+                        <dl>
+                            <dt>Usuários:</dt>
+                            <dd>{{total.2.users}}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

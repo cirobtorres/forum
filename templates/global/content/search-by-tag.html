@@ -1,0 +1,28 @@
+{% extends 'global/extend/index.html' %}
+{% block title %}{{tag.tag_name}}{% endblock title %}
+{% block content %}
+<div>
+    <span>Resultado de todos os tópicos com a TAG "<strong>{{tag.1}}</strong>"</span>
+</div>
+    {% include 'global/include/pagination.html' %}
+    <ul class="tag-ul-main-container">
+        {% for topic in pagination.0 %}
+            <li class="tag-li-container">
+                <span>
+                    <a href="{% url 'forum:topic' session_id=topic.topic_session_id topic_id=topic.id %}">
+                        <strong>{{topic.topic_title}}</strong></a>
+                        <br>Criado por
+                    {% if topic.topic_user %}
+                        <a href="{% url 'account:dashboard_view' name=topic.topic_user id=topic.topic_user.id %}">
+                        {{topic.topic_user}}</a> em
+                    {% else %}
+                        usuário_excluído
+                    {% endif %}
+                    <a href="{% url 'forum:session' session_id=topic.topic_session_id %}">
+                        {{topic.topic_session}}</a>, {{topic.topic_timestamp_create|date:"d \d\e F \d\e Y à\s H:i"}}.
+                </span>
+            </li>
+        {% endfor %}
+    </ul>
+    {% include 'global/include/pagination.html' %}
+{% endblock content %}

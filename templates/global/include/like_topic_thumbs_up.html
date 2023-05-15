@@ -1,0 +1,16 @@
+{% if request.user.is_authenticated %}
+    <div class="topic-like">
+        <form action="{% url 'forum:like_topic' session_id=topic.topic_session_id topic_id=topic.id %}" method="POST">
+            {% csrf_token %}
+            {% if request.user in topic.likes.all %}
+                <button type="submit" name="topic_id" value="{{topic.id}}" class="button-like">
+                    <i class="fa-solid fa-thumbs-up"></i>
+                </button>
+            {% else %}
+                <button type="submit" name="topic_id" value="{{topic.id}}" class="button-dislike">
+                    <i class="fa-solid fa-thumbs-up"></i>
+                </button>
+            {% endif %}
+        </form>
+    </div>
+{% endif %}

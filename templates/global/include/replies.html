@@ -1,0 +1,70 @@
+{% load static %}
+{% for reply in pagination.0 %}
+    <div class="topic-reply-main-container">
+        <div>
+            <div class="topic-outer-discussion-container">
+                <div class="topic-inner-left-container">
+                    <div class="topic-inner-left-container-img-replies">
+                        {% if reply.reply_user %}
+                            <a href="{% url 'account:dashboard_view' name=reply.reply_user.username id=reply.reply_user.id %}">
+                                {% if reply.reply_user.account.img.url is not None %}
+                                    <img 
+                                        src="{{reply.reply_user.account.img.url}}" 
+                                        alt="Avatar de {{reply.reply_user.username}}" 
+                                        title="Perfil de {{reply.reply_user.username}}"
+                                    >
+                                {% else %}
+                                    <img 
+                                        src="{% static 'img/default/default128x128.png' %}" 
+                                        alt="Usuário excluído" 
+                                        title="Usuário excluído"
+                                    >
+                                {% endif %}
+                            </a>
+                        {% else %}
+                            <img 
+                                src="{% static 'img/default/default128x128.png' %}" 
+                                alt="Usuário excluído" 
+                                title="Usuário excluído"
+                            >
+                        {% endif %}
+                    </div>
+                    {% if reply.reply_user %}
+                        <span>
+                            <a href="{% url 'account:dashboard_view' name=reply.reply_user.username id=reply.reply_user_id %}">
+                                {{reply.reply_user.username}}
+                            </a>
+                        </span>
+                        {% if reply.reply_user.is_staff %}
+                            <span class="topic-inner-left-moderator">Moderador</span>
+                        {% endif %}
+                        <span>Ingressou: {{reply.reply_user.date_joined|date:"d/m/Y"}}</span>
+                    {% else %}
+                        <span>
+                            usuário_excluído
+                        </span>
+                    {% endif %}
+                    <span>
+                        {% if reply.reply_user.account.city %}{{reply.reply_user.account.city}}/{% endif %}{{reply.reply_user.account.state}}
+                    </span>
+                </div>
+                <div class="topic-inner-right-container">
+                    <article id="comment-of-{{reply.reply_user.username}}-{{reply.id}}">
+                        {{reply.reply_content}}
+                    </article>
+                    {% include 'global/include/like_reply_thumbs_up.html' %}
+                    <div class="topic-inner-reply-user-update">
+                        {% if reply.reply_timestamp_update > reply.reply_timestamp_create %}
+                            <span><b>Editado</b> por
+                                <a href="{% url 'account:dashboard_view' name=reply.reply_user.username id=reply.reply_user_id %}">
+                                    {{reply.reply_user.username}}</a>, {{reply.reply_timestamp_create|date:"d \d\e F \d\e Y à\s H:i:s"}}
+                            </span>
+                        {% endif %}
+                    </div>
+                    <span class="topic-counter">#{{forloop.counter|add:pagination.0.start_index}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'global/include/reply_update.html' %}
+{% endfor %}

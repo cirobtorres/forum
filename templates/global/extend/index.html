@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% include 'global/include/head.html' %}
+        <title>SW Forum | {% block title %}{% endblock title %}</title>
+    </head>
+    <body>
+        <div class="global-viewport-display">
+            <div class="global-header-main-container">
+                <div class="global-centralized-box-container">
+                    <header>
+                        {% include 'global/include/header.html' %}
+                    </header>
+                </div>
+            </div>
+            <div class="global-centralized-box-container global-main-container-vertical-position-top pagination-fix">
+                <main>
+                    {% include 'global/include/messages.html' %}
+                    {% include 'global/include/breadcrumb.html' %}
+                    {% block content %}{% endblock content %}
+                </main>
+            </div>
+            <div class="global-footer-main-container">
+                <footer>
+                    {% include 'global/include/footer.html' %}
+                </footer>
+            </div>
+        </div>
+    </body>
+</html>

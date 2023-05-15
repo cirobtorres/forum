@@ -1,0 +1,7 @@
+<div class="search-main-container">
+    <form action="{% url 'forum:query' %}" method="GET" class="search-form-main-container">
+        <button type="submit" class="search-submit-button"><i class="fa-solid fa-magnifying-glass"></i></button>
+        <input type="search" name="q" value="{{search_value}}" required placeholder="Buscar postagens e usuários" class="search-bar">
+        <button type="reset" class="search-reset-button"><i class="fa-solid fa-circle-xmark"></i></button>
+    </form>
+</div>

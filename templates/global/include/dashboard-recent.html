@@ -1,0 +1,48 @@
+<div>
+    <div class="dashboard-most-recent-topics">
+        <div class="dashboard-user-datas">
+            <h2>
+                Atividade recente
+            </h2>
+        </div>
+        <div>
+            <h3>LEMBRETE: ADICIONAR AQUI OS TÓPICOS CRIADOS</h3>
+            <span>Blá Blá Blá</span>
+        </div>
+        <h3>COMENTÁRIOS:</h3>
+        {% for reply in user_replies|slice:5 %}
+            <div class="dashboard-most-recent-topics-container">
+                <div class="dashboard-most-recent-topics-header">
+                    <div>
+                        <div>
+                            <h2>
+                                <a href="{% url 'forum:topic' session_id=reply.reply_topic.topic_session_id topic_id=reply.reply_topic_id %}">
+                                    {{reply.reply_topic.topic_title}}
+                                </a>
+                            </h2>
+                        </div>
+                        <span class="dashboard-most-recent-topics-session">Sessão:
+                            <a href="{% url 'forum:session' session_id=reply.reply_topic.topic_session_id %}">
+                                <b>{{reply.reply_topic.topic_session.session_title}}</b></a>,
+                            publicado em {{reply.reply_timestamp_create|date:"d/m/Y à\s H:i"}}.
+                        </span>
+                    </div>
+                    <div>
+                        <ul class="dashboard-user-recent-topic-ul">
+                            <li><button>Editar</button></li><!--alterar para button-->
+                            <li><button>Excluir</button></li><!--alterar para button-->
+                        </ul>
+                    </div>
+                </div>
+                <div class="dashboard-user-recent-topic-content">
+                    <p>{{reply.reply_content|truncatechars:300}}</p>
+                </div>
+            </div>
+        {% endfor %}
+        {% if user_replies.count > 5 %}
+            <div class="dashboard-display-all-comments">
+                <a href="">Ver todos</a>
+            </div>
+        {% endif %}
+    </div>
+</div>

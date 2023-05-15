@@ -1,0 +1,20 @@
+{% extends 'global/extend/index.html' %}
+{% block title %}Cadastro{% endblock title %}
+{% block content %}
+    {% include 'global/include/messages.html' %}
+    <h1 class="form-register-h1">Criar Conta</h1>
+        <form
+            action="{{form_confirmation}}" 
+            method="POST" 
+            class="form-register-main-container" 
+            enctype="multipart/form-data"
+        >
+            {% csrf_token %}
+            <fieldset class="form-register-content form-register-grid">
+                {% include 'global/include/register-user-account-form.html' %}
+            </fieldset>
+            <div class="form-register-button-submit">
+                <button type="submit">Enviar</button>
+            </div>
+        </form>
+{% endblock content %}

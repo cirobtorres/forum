@@ -1,0 +1,25 @@
+{% extends 'global/extend/index.html' %}
+{% block title %}contas - login{% endblock title %}
+{% block content %}
+    <div class="login-h1">
+        <h1>Fazer Login</h1>
+    </div>
+    <div class="login-form-outter-box-container">
+        <form action="{{form_confirmation}}" method="POST">
+            {% csrf_token %}
+            {% for field in form %}
+                <div>
+                    {{field.label}}
+                    {{field}}
+                    {% if field.help_text %}
+                        {{field.help_text}}
+                    {% endif %}
+                    {{field.errors}}
+                </div>
+            {% endfor %}
+            <div class="login-form-button">
+                <button type="submit">Confirmar</button>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

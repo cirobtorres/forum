@@ -1,0 +1,13 @@
+{% if reply.reply_user_id == request.user.id %}
+    <div class="topic-outer-discussion-reply-footer">
+        <div class="topic-outer-discussion-button">
+            <form action="">
+                <button>Editar</button>
+            </form>
+            <form action="{% url 'forum:reply_delete' session_id=topic.topic_session_id topic_id=topic.id reply_id=reply.id %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" value="comment_{{reply.id}}">Excluir</button>
+            </form>
+        </div>
+    </div>
+{% endif %}
